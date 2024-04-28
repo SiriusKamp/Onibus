@@ -1,22 +1,21 @@
 {{#each erros}}
     <div class="alert alert-danger">{{texto}}</div>
 {{/each}}
+<h3>Bem vindo ao estudo de alimentação</h3>
 <h1>Crie sua conta</h1>
-<span>A senha deve ser maior que 4 numeros</span>
+<span>A senha deve ser maior que 4 números</span>
 <br>
-<div class ="card mt-4">
-    <div class ="card-body">
-        <form action="" method="post">
+<div class="card mt-4">
+    <div class="card-body">
+        <form action="/adminuser/registro" method="post">
             <label for="nome">Nome:</label>
             <input type="text" name="nome" class="form-control" required>
-             <label for="nome">Ano De Nascimento:</label>
+            <label for="nascimento">Ano De Nascimento:</label>
             <input type="date" name="nascimento" class="form-control" required>
             <label for="email">Email: </label>
             <input type="email" name="email" class="form-control" required>
             <label for="senha">Senha: </label>
             <input type="password" name="senha" class="form-control" required>
-            <label for="senha2">Redigite a senha :</label>
-            <input type="password" name="senha2" class="form-control" required>
             <button type="submit" class="btn btn-success mt-4">Registrar</button>
         </form>
     </div>

@@ -1,0 +1,67 @@
+{{#each erros}}
+    <div class="alert alert-danger">{{texto}}</div>
+{{/each}}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar Viagem</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                Cadastrar Viagem
+            </div>
+            <div class="card-body">
+<form action="/admin/viagens/cadastrar" method="post">
+<div class="form-group">
+    <label for="numero_do_onibus">Ônibus:</label>
+    <select id="numero_do_onibus" name="numero_do_onibus" class="form-control" required>
+        <option value="" selected disabled>Selecione um ônibus</option>
+        {{#each onibus}}
+            <option value={{this.numero}}>{{this.numero}}</option>
+        {{/each}}
+    </select>
+</div>
+                    <div class="form-group">
+                        <label for="origem">Origem:</label>
+                        <input type="text" id="origem" name="origem" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="destino">Destino:</label>
+                        <input type="text" id="destino" name="destino" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="horario_partida">Horário de Partida:</label>
+                        <input type="time" id="horario_partida" name="horario_partida" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="horario_chegada">Horário de Chegada:</label>
+                        <input type="time" id="horario_chegada" name="horario_chegada" class="form-control" required>
+                    </div>
+<div class="form-group">
+                        <label for="data_partida">Data De Partida:</label>
+                        <input type="date" id="data_partida" name="data_partida" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="data_chegada">Data de Chegada:</label>
+                        <input type="date" id="data_chegada" name="data_chegada" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Cadastrar</button>
+                </form>
+            </div>
+        </div>
+
+        <a href="/admin/" class="btn btn-secondary mt-3">Voltar</a>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

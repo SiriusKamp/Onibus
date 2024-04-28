@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="https://unisales.br"><img src="/img/LogoUnisales.png" width="160" height="70" ></a>
-    <a class="navbar-brand" href="/">Guia-Alimentação</a>
+    <a class="navbar-brand" href="https://unisales.br"><img src="/img/onibus.png" width="100" height="70" ></a>
+    <a class="navbar-brand" href="/">OniBUS</a>
     {{#if user}}
    <ul class="navbar-nav">
         <li class="nav-item">
@@ -15,12 +15,18 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/alimentacao">Formulario</a>
-        </li>
         {{#if user}}
                 <li class="nav-item">
           <a class="nav-link active" href="/adminuser/logout">Sair</a>
+        </li>
+          <li class="nav-item">
+          <a class="nav-link active" href="/">Reservas</a>
+        </li>
+                  <li class="nav-item">
+          <a class="nav-link active" href="/">Viagens Disponiveis</a>
+        </li>
+                  <li class="nav-item">
+          <a class="nav-link active" href="/">Check In</a>
         </li>
         {{else}}
         <li class="nav-item">

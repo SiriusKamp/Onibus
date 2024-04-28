@@ -12,21 +12,20 @@ const AdminSquema = new Schema({
     type: "String",
     required: true,
   },
+  senha: {
+    type: "String",
+    required: true,
+  },
   nascimento: {
     type: Date,
     required: true,
   },
-  senha: { type: "String", required: true },
   permitions: {
     type: "Number",
     default: 0,
   },
   pontuacao: { type: "Number", default: 0 },
-  confirmationToken: String,
-  isConfirmed: {
-    type: Boolean,
-    default: false,
-  },
+  datacriacao: { type: Date, default: Date.now() },
 });
 
 mongoose.model("admins", AdminSquema);

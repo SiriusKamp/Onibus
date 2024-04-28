@@ -1,16 +1,21 @@
 const express = require("express");
 require("./models/admin");
+
 const app = express();
 const path = require("path");
 const handlebars = require("express-handlebars");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+require("./models/onibus");
+require("./models/viagem");
+require("./models/reserva");
+require("./models/cadeira");
 const admin = require("./Routes/admin");
 const session = require("express-session");
 const flash = require("connect-flash");
 const adminuser = require("./Routes/AdminUser");
 const passport = require("passport");
-require("./config/auth")(passport);
+require("./config/auth");
 const Admin = mongoose.model("admins");
 const { Logado } = require("./helpers/eAdmin.js");
 //configure
@@ -71,34 +76,6 @@ app.use("/AdminUser", adminuser);
 
 app.get("/", function (req, res) {
   res.render("home");
-});
-app.get("/alimentacao", Logado, function (req, res) {
-  res.render("alimentacao");
-});
-app.post("/alimentacao", Logado, function (req, res) {
-  var total = 0;
-  var erros = [];
-
-  // Iterar sobre as perguntas
-  for (let i = 1; i <= 24; i++) {
-    const nomeDaPergunta = `Pergunta${i}`;
-    // Verificar se a pergunta existe no corpo da requisição
-
-    if (req.body[nomeDaPergunta] == undefined && erros.length < 1) {
-      erros.push({ texto: "Todos os campos devem ser preenchidos" });
-    }
-    if (req.body[nomeDaPergunta]) {
-      // Armazenar a resposta no objeto
-      total += Number.parseInt(req.body[nomeDaPergunta]);
-    }
-  }
-  if (erros.length > 0) {
-    res.render("alimentacao", { erros: erros });
-  } else {
-    req.user.pontuacao = total;
-    req.user.save();
-    res.render("feedback", { pontuacao: req.user.pontuacao });
-  }
 });
 //ultima coisa no index
 app.listen(8081, () => {
