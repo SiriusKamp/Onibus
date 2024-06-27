@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Reservas em Análise</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Reservas em Análise</h1>
+
+        {{#if success_msg}}
+            <div class="alert alert-success">{{success_msg}}</div>
+        {{/if}}
+        {{#if error_msg}}
+            <div class="alert alert-danger">{{error_msg}}</div>
+        {{/if}}
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Email</th>
+                    <th>Idade</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each reservas}}
+                <tr>
+                    <td>{{this.nome}}</td>
+                    <td>{{this.CPF}}</td>
+                    <td>{{this.email}}</td>
+                    <td>{{this.idade}}</td>
+                    <td>
+                        <form action="/admin/reservas/confirmar/{{this._id}}" method="post" style="display: inline;">
+                            <button type="submit" class="btn btn-success">Confirmar</button>
+                        </form>
+                        <form action="/admin/reservas/reprovar/{{this._id}}" method="post" style="display: inline;">
+                            <button type="submit" class="btn btn-danger">Reprovar</button>
+                        </form>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+        <a href="/admin/" class="btn btn-secondary mt-3">Voltar</a>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

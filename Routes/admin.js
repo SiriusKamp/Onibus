@@ -50,7 +50,7 @@ router.post("/homeadm/delete", eAdmin, async function (req, res) {
     res.redirect("/admin/");
   } catch (err) {
     console.error(err);
-    req.flash("error_msg", "Erro ao excluir admin");
+    req.flash("error_msg", "Erro ao excluir usuario");
     res.redirect("/admin/");
   }
 });
@@ -273,6 +273,53 @@ router.post("/viagens/cadastrar", eAdmin, async (req, res) => {
       req.flash("error_msg", "Houve um erro ao cadastrar a viagem");
       res.redirect("/admin/viagens/cadastrar");
     }
+  }
+});
+
+router.get("/reservas/analise", eAdmin, async (req, res) => {
+  try {
+    const reservas = await Reserva.find({ status: "em analise" }).populate(
+      "id_cadeira"
+    );
+    res.render("admin/listaReservas", { reservas });
+  } catch (err) {
+    req.flash("error_msg", "Erro ao listar reservas");
+    res.redirect("/admin/");
+  }
+});
+
+// Rota para confirmar reserva
+router.post("/reservas/confirmar/:id", eAdmin, async (req, res) => {
+  try {
+    await Reserva.findByIdAndUpdate(req.params.id, { status: "checkin" });
+    req.flash("success_msg", "Reserva confirmada com sucesso");
+    res.redirect("/admin/reservas/analise");
+  } catch (err) {
+    req.flash("error_msg", "Erro ao confirmar reserva");
+    res.redirect("/admin/reservas/analise");
+  }
+});
+
+// Rota para reprovar reserva
+router.post("/reservas/reprovar/:id", eAdmin, async (req, res) => {
+  try {
+    const reserva = await Reserva.findById(req.params.id);
+    if (reserva) {
+      await Cadeira.findByIdAndUpdate(reserva.id_cadeira, {
+        reserva: { info_reserva: null },
+      });
+      await Reserva.findByIdAndUpdate(req.params.id, { status: "reprovado" });
+      req.flash(
+        "success_msg",
+        "Reserva reprovada e cadeira resetada com sucesso"
+      );
+    } else {
+      req.flash("error_msg", "Reserva não encontrada");
+    }
+    res.redirect("/admin/reservas/analise");
+  } catch (err) {
+    req.flash("error_msg", "Erro ao reprovar reserva");
+    res.redirect("/admin/reservas/analise");
   }
 });
 

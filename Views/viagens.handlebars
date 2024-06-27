@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Viagens</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                Lista de Viagens
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID da Viagem</th>
+                            <th>Ônibus</th>
+                            <th>Origem</th>
+                            <th>Destino</th>
+                            <th>Horário de Partida</th>
+                            <th>Horário de Chegada</th>
+                            <th>Reservar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each viagens}}
+                            <tr>
+                                <td>{{this._id}}</td>
+                                <td>{{this.numero_do_onibus}}</td>
+                                <td>{{this.origem}}</td>
+                                <td>{{this.destino}}</td>
+                                <td>{{this.horario_partida}}</td>
+                                <td>{{this.horario_chegada}}</td>
+                                <td>
+                                    <a href="/adminuser/viagens/{{this._id}}/cadeiras" class="btn btn-primary">Selecionar</a>
+                                </td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <a href="/" class="btn btn-secondary mt-3">Voltar</a>
+    </div>
+</body>
+</html>

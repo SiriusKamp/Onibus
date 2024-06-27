@@ -1,6 +1,5 @@
 // models/admin.js
 const mongoose = require("mongoose");
-const passport = require("passport");
 const Schema = mongoose.Schema;
 
 const AdminSquema = new Schema({
@@ -24,7 +23,6 @@ const AdminSquema = new Schema({
     type: "Number",
     default: 0,
   },
-  pontuacao: { type: "Number", default: 0 },
   datacriacao: { type: Date, default: Date.now() },
 });
 

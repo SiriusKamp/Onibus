@@ -12,7 +12,7 @@ module.exports = {
     }
     req.flash(
       "error_msg",
-      "Para responder o formulario você precisa criar conta e logar"
+      "Para ter acesso a esta funcionalidade você deve estar logado"
     );
     res.redirect("/");
   },

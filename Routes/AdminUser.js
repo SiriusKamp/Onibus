@@ -8,6 +8,10 @@ const crypto = require("crypto");
 require("../models/admin");
 const Admin = mongoose.model("admins");
 const passport = require("passport");
+const Viagem = mongoose.model("Viagem");
+const Cadeira = mongoose.model("Cadeira");
+const Onibus = mongoose.model("Onibus");
+const Reserva = mongoose.model("Reserva");
 
 router.get("/registro", async (req, res) => {
   res.render("../views/registro");
@@ -53,6 +57,7 @@ router.post("/registro", async (req, res) => {
         nascimento: req.body.nascimento,
       });
 
+      novoAdmin.nascimento.setHours(novoAdmin.nascimento.getHours() + 3);
       // Salve o novoAdmin no banco de dados
       await novoAdmin.save();
 
@@ -85,6 +90,88 @@ router.get("/logout", (req, res) => {
     req.flash("success_msg", "Deslogado");
     res.redirect("/");
   });
+});
+
+// Rota para listar viagens
+router.get("/viagens", async (req, res) => {
+  try {
+    const viagens = await Viagem.find();
+    res.render("viagens", { viagens });
+  } catch (err) {
+    console.error(err);
+    req.flash("error_msg", "Erro ao listar viagens");
+    res.redirect("/");
+  }
+});
+
+router.get("/viagens/:id/cadeiras", async (req, res) => {
+  try {
+    const viagemId = req.params.id;
+    const viagem = await Viagem.findById(viagemId);
+
+    if (!viagem) {
+      req.flash("error_msg", "Viagem não encontrada");
+      return res.redirect("/adminuser/viagens");
+    }
+
+    const onibus = await Onibus.findOne({ numero: viagem.numero_do_onibus });
+    if (!onibus) {
+      req.flash("error_msg", "Ônibus não encontrado");
+      return res.redirect("/adminuser/viagens");
+    }
+
+    const cadeiras = await Cadeira.find({
+      numero_onibus: onibus.numero,
+      "reserva.info_reserva": null,
+    });
+
+    res.render("cadeiras", {
+      viagem,
+      cadeiras,
+    });
+  } catch (err) {
+    console.error(err);
+    req.flash("error_msg", "Houve um erro ao listar as cadeiras");
+    res.redirect("/adminuser/viagens");
+  }
+});
+
+// Rota para criar reserva
+router.post("/reservar", async (req, res) => {
+  const { viagemId, cadeiraId, nome, idade, CPF, email } = req.body;
+
+  try {
+    const cadeira = await Cadeira.findById(cadeiraId);
+
+    if (!cadeira) {
+      req.flash("error_msg", "Cadeira não encontrada");
+      return res.redirect(`/adminuser/viagens/${viagemId}/cadeiras`);
+    }
+
+    if (cadeira.reserva.info_reserva) {
+      req.flash("error_msg", "Cadeira já reservada");
+      return res.redirect(`/adminuser/viagens/${viagemId}/cadeiras`);
+    }
+
+    const reserva = new Reserva({
+      id_cadeira: cadeira._id,
+      nome,
+      idade,
+      CPF,
+      email,
+    });
+
+    await reserva.save();
+    cadeira.reserva.info_reserva = reserva._id;
+    await cadeira.save();
+
+    req.flash("success_msg", "Reserva realizada com sucesso");
+    res.redirect("/adminuser/viagens");
+  } catch (err) {
+    console.error(err);
+    req.flash("error_msg", "Houve um erro ao realizar a reserva");
+    res.redirect(`/adminuser/viagens/${viagemId}/cadeiras`);
+  }
 });
 
 module.exports = router;
